@@ -1,0 +1,1252 @@
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Jejak Sejarah: Misi NAM</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --gold: #ffdc91;
+  --cream: #f8ead0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Georgia, serif;
+  color: white;
+  background:
+    radial-gradient(ellipse at 50% 40%, #365b94 0%, #172b50 55%, #080f23 100%);
+  overflow-x: hidden;
+}
+
+/* BACKGROUND */
+
+.background-glow {
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: #779cdb;
+  filter: blur(130px);
+  opacity: .15;
+  pointer-events: none;
+  animation: glow 8s ease-in-out infinite alternate;
+}
+
+.glow-one {
+  top: 5%;
+  left: -120px;
+}
+
+.glow-two {
+  bottom: 0;
+  right: -120px;
+  animation-delay: 3s;
+}
+
+@keyframes glow {
+  from {
+    transform: translate(0, 0) scale(.8);
+  }
+
+  to {
+    transform: translate(80px, 50px) scale(1.3);
+  }
+}
+
+/* STARS */
+
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #ffe8b4;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ffe8b4;
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: .2;
+    transform: scale(.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* HEADER */
+
+header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 30px 15px 5px;
+  animation: fadeDown 1.2s ease both;
+}
+
+header h1 {
+  color: var(--gold);
+  font-size: clamp(23px, 5vw, 40px);
+  margin: 0 0 10px;
+  text-shadow: 0 3px 15px #0009;
+  letter-spacing: 2px;
+}
+
+header p {
+  font-family: Arial, sans-serif;
+  color: #dce8ff;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.names {
+  color: #ffe4aa;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 13px;
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* BOOK CONTAINER */
+
+.book-container {
+  position: relative;
+  z-index: 2;
+  width: min(94vw, 900px);
+  margin: 38px auto 0;
+  perspective: 2500px;
+  animation: bookEntrance 1.5s ease both;
+}
+
+@keyframes bookEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(45px) scale(.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.book {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.54 / 1;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 25px 30px #0009);
+  transition: transform .5s ease;
+}
+
+.book-container:hover .book {
+  transform: rotateX(1deg);
+}
+
+/* LEFT BASE */
+
+.left-base {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 50%;
+  height: 100%;
+  background: var(--cream);
+  border-radius: 7px 0 0 7px;
+  box-shadow: inset -10px 0 18px #0002;
+  display: none;
+}
+
+.left-base::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background: linear-gradient(to right, #c8b18a, #fff1d4);
+}
+
+/* BOOK SHEETS */
+
+.sheet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 1.2s cubic-bezier(.645,.045,.355,1);
+  border-radius: 0 7px 7px 0;
+  display: none;
+}
+
+.sheet:not(.turned) {
+  transform: rotateY(0deg);
+}
+
+.sheet.turned {
+  transform: rotateY(-180deg);
+}
+
+/* PAGE FACES */
+
+.face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--cream);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.face.front {
+  border-radius: 0 7px 7px 0;
+  box-shadow: inset 9px 0 17px #0002;
+}
+
+.face.back {
+  transform: rotateY(180deg);
+  border-radius: 7px 0 0 7px;
+  box-shadow: inset -9px 0 17px #0002;
+}
+
+.face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--cream);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* PAGE SHADOW */
+
+.face.front::after,
+.face.back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity .6s;
+}
+
+.face.front::after {
+  background: linear-gradient(to left, transparent 60%, #0003);
+}
+
+.face.back::after {
+  background: linear-gradient(to right, transparent 60%, #0002);
+}
+
+/* COVERS */
+
+.single-page {
+  position: absolute;
+  left: 25%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 7px;
+  box-shadow: 0 12px 35px #0009;
+  background: var(--cream);
+  transition: filter .4s, transform .4s;
+}
+
+.single-page img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: var(--cream);
+}
+
+#frontCover {
+  cursor: pointer;
+  animation: coverFloat 4s ease-in-out infinite;
+}
+
+#frontCover:hover {
+  filter: brightness(1.1);
+}
+
+@keyframes coverFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* BACK COVER DESIGN */
+
+.back-cover {
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffe2a0;
+  background: radial-gradient(circle, #31568a, #101c3c 75%);
+  border: 7px ridge #c49a56;
+  outline: 2px solid #f8d994;
+  outline-offset: -12px;
+}
+
+.back-cover h2 {
+  font-size: clamp(14px, 3vw, 25px);
+  line-height: 1.4;
+}
+
+.back-cover p {
+  font-family: Arial, sans-serif;
+  font-size: clamp(8px, 1.5vw, 12px);
+  line-height: 1.7;
+  color: #f5e8c9;
+}
+
+.ornament {
+  font-size: clamp(18px, 4vw, 30px);
+  margin: 7px;
+}
+
+.credits {
+  margin-top: 12px;
+  border-top: 1px solid #c49a56;
+  padding-top: 7px;
+  width: 100%;
+}
+
+/* ENDING ANIMATION */
+
+#backCover {
+  animation: ending .9s ease both;
+}
+
+@keyframes ending {
+  from {
+    opacity: 0;
+    transform: scale(.85) rotateY(20deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+  }
+}
+
+/* BUTTONS */
+
+.controls {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 32px 10px 12px;
+}
+
+button {
+  padding: 12px 23px;
+  border-radius: 30px;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, #ffe7ad, #c18c4b);
+  color: #21172a;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: .5px;
+  transition: .3s;
+  box-shadow: 0 5px 15px #0004;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px #0008;
+  background: linear-gradient(135deg, #fff0c8, #e0ad68);
+}
+
+button:active:not(:disabled) {
+  transform: scale(.95);
+}
+
+button:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+#pageNumber {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: var(--gold);
+  min-width: 125px;
+  text-align: center;
+}
+
+/* PROGRESS BAR */
+
+.progress {
+  position: relative;
+  z-index: 2;
+  width: min(75vw, 350px);
+  height: 6px;
+  background: #ffffff25;
+  margin: 20px auto 12px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #d3a45c, #fff0b9);
+  box-shadow: 0 0 12px #ffdc91;
+  transition: width .7s ease;
+}
+
+.progress-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #dce8ff;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  margin: 8px;
+}
+
+.instruction {
+  position: relative;
+  z-index: 2;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: #c6d5f2;
+  font-size: 11px;
+  line-height: 1.8;
+  padding: 0 15px 30px;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media(max-width: 600px) {
+
+  header {
+    padding-top: 23px;
+  }
+
+  header h1 {
+    letter-spacing: 1px;
+  }
+
+  .names {
+    max-width: 330px;
+    margin: 12px auto 0;
+  }
+
+  .book-container {
+    width: 96vw;
+    margin-top: 35px;
+  }
+
+  .book {
+    aspect-ratio: 1.15 / 1;
+  }
+
+  .single-page {
+    left: 15%;
+    width: 70%;
+  }
+
+  .controls {
+    gap: 8px;
+    margin-top: 25px;
+  }
+
+  button {
+    padding: 10px 13px;
+    font-size: 10px;
+  }
+
+  #pageNumber {
+    min-width: 95px;
+    font-size: 10px;
+  }
+
+  .instruction {
+    font-size: 10px;
+  }
+}
+
+@media(max-width: 350px) {
+
+  button {
+    padding: 9px 10px;
+  }
+
+  .book-container {
+    width: 98vw;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media(prefers-reduced-motion: reduce) {
+
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND EFFECTS -->
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+<div class="stars" id="stars"></div>
+
+<!-- HEADER -->
+
+<header>
+
+  <h1>JEJAK SEJARAH: MISI NAM</h1>
+
+  <p>
+    Penglibatan Malaysia dalam<br>
+    Pergerakan Negara-Negara Tanpa Pihak
+  </p>
+
+  <div class="names">
+    Disediakan oleh: NUR LAILA ASYIKIN BINTI MOHD TAMBRIZ
+    & NUR ZARITH SOFEA BINTI ZAINAL
+  </div>
+
+</header>
+
+<main>
+
+<!-- DIGITAL BOOK -->
+
+<div class="book-container">
+
+  <div class="book" id="book">
+
+    <!-- LEFT PAGE -->
+
+    <div class="left-base" id="leftBase"></div>
+
+    <!-- FRONT COVER -->
+
+    <div class="single-page" id="frontCover">
+
+      <img src="mukadepan.jpg" alt="Muka Depan">
+
+    </div>
+
+    <!-- BACK COVER -->
+
+    <div class="single-page" id="backCover"
+         style="display:none;">
+
+      <div class="back-cover">
+
+        <div class="ornament">✦ ❖ ✦</div>
+
+        <h2>
+          JEJAK SEJARAH:<br>
+          MISI NAM
+        </h2>
+
+        <p>
+          Penglibatan Malaysia dalam
+          Pergerakan Negara-Negara Tanpa Pihak
+        </p>
+
+        <div class="ornament">🌍</div>
+
+        <p>
+          Sejarah bukan sekadar untuk dikenang,
+          tetapi untuk dijadikan pengajaran
+          kepada generasi akan datang.
+        </p>
+
+        <div class="credits">
+
+          <p>DISEDIAKAN OLEH</p>
+
+          <p>
+            NUR LAILA ASYIKIN<br>
+            NUR ZARITH SOFEA
+          </p>
+
+          <p>TERIMA KASIH KERANA MEMBACA!</p>
+
+        </div>
+
+        <div class="ornament">✦ ❖ ✦</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NAVIGATION BUTTONS -->
+
+<div class="controls">
+
+  <button id="prev" disabled>
+    ❮ SEBELUM
+  </button>
+
+  <span id="pageNumber">
+    Muka Depan
+  </span>
+
+  <button id="next">
+    BUKA KOMIK ❯
+  </button>
+
+</div>
+
+<!-- READING PROGRESS -->
+
+<div class="progress">
+
+  <div class="progress-fill" id="progressFill"></div>
+
+</div>
+
+<p class="progress-text" id="progressText">
+  0% SELESAI DIBACA
+</p>
+
+<!-- INSTRUCTIONS -->
+
+<p class="instruction">
+
+  ✨ Selak halaman untuk meneroka sejarah Malaysia dalam NAM ✨
+
+  <br>
+
+  Gunakan butang, swipe skrin atau anak panah keyboard.
+
+</p>
+
+</main>
+
+<script>
+
+// =================================
+// PAGE IMAGES
+// =================================
+
+const pages = [
+
+  {
+    name: "Muka Depan",
+    src: "mukadepan.jpg"
+  },
+
+  {
+    name: "Halaman 1",
+    src: "halaman1.jpg"
+  },
+
+  {
+    name: "Halaman 2",
+    src: "halaman2.jpg"
+  },
+
+  {
+    name: "Halaman 3",
+    src: "halaman3.jpg"
+  },
+
+  {
+    name: "Halaman 4",
+    src: "halaman4.jpg"
+  },
+
+  {
+    name: "Halaman 5",
+    src: "halaman5.jpg"
+  },
+
+  {
+    name: "Halaman 6",
+    src: "halaman6.jpg"
+  },
+
+  {
+    name: "Halaman 7",
+    src: "halaman7.jpg"
+  },
+
+  {
+    name: "Halaman 8",
+    src: "halaman8.jpg"
+  }
+
+];
+
+// =================================
+// ELEMENTS
+// =================================
+
+const book = document.getElementById("book");
+
+const leftBase = document.getElementById("leftBase");
+
+const frontCover = document.getElementById("frontCover");
+
+const backCover = document.getElementById("backCover");
+
+const prevButton = document.getElementById("prev");
+
+const nextButton = document.getElementById("next");
+
+const pageNumber = document.getElementById("pageNumber");
+
+const progressFill = document.getElementById("progressFill");
+
+const progressText = document.getElementById("progressText");
+
+const sheets = [];
+
+let currentSpread = 0;
+
+let isAnimating = false;
+
+const FLIP_TIME = 1250;
+
+// =================================
+// CREATE STARS
+// =================================
+
+const starsContainer = document.getElementById("stars");
+
+for (let i = 0; i < 35; i++) {
+
+  const star = document.createElement("span");
+
+  star.className = "star";
+
+  star.style.left = Math.random() * 100 + "%";
+
+  star.style.top = Math.random() * 100 + "%";
+
+  star.style.animationDelay =
+    Math.random() * 4 + "s";
+
+  star.style.animationDuration =
+    (2 + Math.random() * 3) + "s";
+
+  starsContainer.appendChild(star);
+
+}
+
+// =================================
+// CREATE PAGE FACE
+// =================================
+
+function createFace(page, side) {
+
+  const face = document.createElement("div");
+
+  face.className = "face " + side;
+
+  const img = document.createElement("img");
+
+  img.src = page.src;
+
+  img.alt = page.name;
+
+  img.draggable = false;
+
+  face.appendChild(img);
+
+  return face;
+
+}
+
+// =================================
+// CREATE BACK COVER
+// =================================
+
+function createBackCover() {
+
+  const back = document.createElement("div");
+
+  back.className = "face back";
+
+  back.innerHTML = `
+
+    <div class="back-cover">
+
+      <div class="ornament">✦ ❖ ✦</div>
+
+      <h2>
+        JEJAK SEJARAH:<br>
+        MISI NAM
+      </h2>
+
+      <p>
+        Penglibatan Malaysia dalam
+        Pergerakan Negara-Negara Tanpa Pihak
+      </p>
+
+      <div class="ornament">🌍</div>
+
+      <p>
+        Sejarah bukan sekadar untuk dikenang,
+        tetapi untuk dijadikan pengajaran
+        kepada generasi akan datang.
+      </p>
+
+      <div class="credits">
+
+        <p>DISEDIAKAN OLEH</p>
+
+        <p>
+          NUR LAILA ASYIKIN<br>
+          NUR ZARITH SOFEA
+        </p>
+
+        <p>TERIMA KASIH KERANA MEMBACA!</p>
+
+      </div>
+
+      <div class="ornament">✦ ❖ ✦</div>
+
+    </div>
+
+  `;
+
+  return back;
+
+}
+
+// =================================
+// BUILD BOOK SHEETS
+// =================================
+
+for (let i = 0; i < 5; i++) {
+
+  const sheet = document.createElement("div");
+
+  sheet.className = "sheet";
+
+  const front = createFace(
+    pages[i * 2],
+    "front"
+  );
+
+  const back = i === 4
+    ? createBackCover()
+    : createFace(pages[i * 2 + 1], "back");
+
+  sheet.appendChild(front);
+
+  sheet.appendChild(back);
+
+  sheet.style.zIndex = 100 - i;
+
+  book.appendChild(sheet);
+
+  sheets.push(sheet);
+
+}
+
+// =================================
+// UPDATE INTERFACE
+// =================================
+
+function updateInterface() {
+
+  if (currentSpread === 0) {
+
+    pageNumber.textContent = "Muka Depan";
+
+    nextButton.textContent = "BUKA KOMIK ❯";
+
+  }
+
+  else if (currentSpread === 5) {
+
+    pageNumber.textContent = "Kulit Belakang";
+
+    nextButton.textContent = "SELESAI ✓";
+
+  }
+
+  else {
+
+    const first = (currentSpread - 1) * 2 + 1;
+
+    const second = first + 1;
+
+    pageNumber.textContent =
+      `Halaman ${first} – ${second}`;
+
+    nextButton.textContent =
+      currentSpread === 4
+        ? "TAMATKAN BACAAN ❯"
+        : "SETERUSNYA ❯";
+
+  }
+
+  prevButton.disabled =
+    currentSpread === 0 || isAnimating;
+
+  nextButton.disabled =
+    currentSpread === 5 || isAnimating;
+
+  const percentage = currentSpread / 5 * 100;
+
+  progressFill.style.width = percentage + "%";
+
+  progressText.textContent =
+    Math.round(percentage) + "% SELESAI DIBACA";
+
+}
+
+// =================================
+// FLIP PAGE ANIMATION
+// =================================
+
+function flipPage(direction) {
+
+  if (isAnimating) return;
+
+  if (direction === "forward" && currentSpread >= 5) return;
+
+  if (direction === "backward" && currentSpread <= 0) return;
+
+  isAnimating = true;
+
+  updateInterface();
+
+  // OPEN FRONT COVER
+
+  if (direction === "forward" && currentSpread === 0) {
+
+    frontCover.style.display = "none";
+
+    leftBase.style.display = "block";
+
+    sheets.forEach(sheet => {
+
+      sheet.style.display = "block";
+
+    });
+
+    sheets[0].classList.add("turned");
+
+    setTimeout(() => {
+
+      sheets[0].style.zIndex = 10;
+
+      currentSpread = 1;
+
+      isAnimating = false;
+
+      updateInterface();
+
+    }, FLIP_TIME);
+
+    return;
+
+  }
+
+  // RETURN TO FRONT COVER
+
+  if (direction === "backward" && currentSpread === 1) {
+
+    sheets[0].classList.remove("turned");
+
+    setTimeout(() => {
+
+      sheets.forEach(sheet => {
+
+        sheet.style.display = "none";
+
+      });
+
+      leftBase.style.display = "none";
+
+      frontCover.style.display = "block";
+
+      sheets[0].style.zIndex = 100;
+
+      currentSpread = 0;
+
+      isAnimating = false;
+
+      updateInterface();
+
+    }, FLIP_TIME);
+
+    return;
+
+  }
+
+  // OPEN BACK COVER
+
+  if (direction === "forward" && currentSpread === 4) {
+
+    sheets[4].classList.add("turned");
+
+    setTimeout(() => {
+
+      sheets.forEach(sheet => {
+
+        sheet.style.display = "none";
+
+      });
+
+      leftBase.style.display = "none";
+
+      backCover.style.display = "block";
+
+      currentSpread = 5;
+
+      isAnimating = false;
+
+      updateInterface();
+
+    }, FLIP_TIME);
+
+    return;
+
+  }
+
+  // RETURN FROM BACK COVER
+
+  if (direction === "backward" && currentSpread === 5) {
+
+    backCover.style.display = "none";
+
+    leftBase.style.display = "block";
+
+    sheets.forEach(sheet => {
+
+      sheet.style.display = "block";
+
+    });
+
+    sheets[4].style.zIndex = 110;
+
+    sheets[4].classList.remove("turned");
+
+    setTimeout(() => {
+
+      sheets[4].style.zIndex = 96;
+
+      currentSpread = 4;
+
+      isAnimating = false;
+
+      updateInterface();
+
+    }, FLIP_TIME);
+
+    return;
+
+  }
+
+  // NORMAL PAGE FLIP
+
+  let sheetIndex;
+
+  if (direction === "forward") {
+
+    sheetIndex = currentSpread;
+
+    sheets[sheetIndex].classList.add("turned");
+
+  }
+
+  else {
+
+    sheetIndex = currentSpread - 1;
+
+    sheets[sheetIndex].style.zIndex = 110;
+
+    sheets[sheetIndex].classList.remove("turned");
+
+  }
+
+  setTimeout(() => {
+
+    if (direction === "forward") {
+
+      sheets[sheetIndex].style.zIndex =
+        10 + sheetIndex;
+
+      currentSpread++;
+
+    }
+
+    else {
+
+      sheets[sheetIndex].style.zIndex =
+        100 - sheetIndex;
+
+      currentSpread--;
+
+    }
+
+    isAnimating = false;
+
+    updateInterface();
+
+  }, FLIP_TIME);
+
+}
+
+// =================================
+// BUTTON EVENTS
+// =================================
+
+nextButton.addEventListener("click", () => {
+
+  flipPage("forward");
+
+});
+
+prevButton.addEventListener("click", () => {
+
+  flipPage("backward");
+
+});
+
+// =================================
+// CLICK FRONT COVER
+// =================================
+
+frontCover.addEventListener("click", () => {
+
+  flipPage("forward");
+
+});
+
+// =================================
+// KEYBOARD EVENTS
+// =================================
+
+document.addEventListener("keydown", event => {
+
+  if (event.key === "ArrowRight") {
+
+    flipPage("forward");
+
+  }
+
+  if (event.key === "ArrowLeft") {
+
+    flipPage("backward");
+
+  }
+
+});
+
+// =================================
+// TOUCH SWIPE
+// =================================
+
+let touchStartX = 0;
+
+book.addEventListener("touchstart", event => {
+
+  touchStartX = event.changedTouches[0].screenX;
+
+}, { passive: true });
+
+book.addEventListener("touchend", event => {
+
+  const touchEndX = event.changedTouches[0].screenX;
+
+  const difference = touchEndX - touchStartX;
+
+  if (Math.abs(difference) < 45) return;
+
+  if (difference < 0) {
+
+    flipPage("forward");
+
+  }
+
+  else {
+
+    flipPage("backward");
+
+  }
+
+}, { passive: true });
+
+// =================================
+// INITIAL SETTINGS
+// =================================
+
+sheets.forEach(sheet => {
+
+  sheet.style.display = "none";
+
+});
+
+updateInterface();
+
+</script>
+
+</body>
+</html>
+
